@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solma Games — Mobile Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg:#1a1a2e;
+  --bg2:#16213e;
+  --bg3:#0f3460;
+  --panel:#1e2a3a;
+  --panel2:#243040;
+  --green:#4ade80;
+  --green2:#22c55e;
+  --yellow:#fbbf24;
+  --orange:#fb923c;
+  --red:#f87171;
+  --pink:#f472b6;
+  --teal:#22d3ee;
+  --purple:#a78bfa;
+  --white:#f0f4ff;
+  --outline:#000;
+  --font-head:'Fredoka One',cursive;
+  --font-body:'Nunito',sans-serif;
+}
+
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--white);
+  font-family:var(--font-body);
+  overflow-x:hidden;
+}
+
+/* ─── TEXT STROKE UTILITY ─── */
+.stroke{
+  -webkit-text-stroke:3px #000;
+  paint-order:stroke fill;
+}
+.stroke-sm{-webkit-text-stroke:2px #000;paint-order:stroke fill}
+
+/* ─── SCROLLING STARS BG ─── */
+body::before{
+  content:'';
+  position:fixed;inset:0;z-index:0;
+  background-image:
+    radial-gradient(1px 1px at 10% 15%, rgba(255,255,255,0.6) 0%, transparent 100%),
+    radial-gradient(1px 1px at 30% 45%, rgba(255,255,255,0.4) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 55% 25%, rgba(255,255,255,0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 75% 60%, rgba(255,255,255,0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 90% 10%, rgba(255,255,255,0.6) 0%, transparent 100%),
+    radial-gradient(1px 1px at 20% 80%, rgba(255,255,255,0.4) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 65% 90%, rgba(255,255,255,0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 45% 70%, rgba(255,255,255,0.3) 0%, transparent 100%);
+  pointer-events:none;
+}
+
+/* ─── NAV ─── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  background:rgba(15,20,35,0.92);
+  backdrop-filter:blur(10px);
+  border-bottom:3px solid var(--green);
+  padding:0.8rem 2rem;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.nav-logo{
+  font-family:var(--font-head);
+  font-size:1.8rem;
+  color:var(--yellow);
+  -webkit-text-stroke:2px #000;
+  paint-order:stroke fill;
+  text-decoration:none;
+  text-shadow:0 3px 0 #b45309;
+  letter-spacing:0.02em;
+}
+.nav-links{display:flex;gap:1.5rem;list-style:none}
+.nav-links a{
+  font-family:var(--font-head);
+  font-size:1rem;
+  color:var(--white);
+  text-decoration:none;
+  padding:0.35rem 1rem;
+  border:2.5px solid transparent;
+  border-radius:8px;
+  transition:all 0.15s;
+}
+.nav-links a:hover{
+  border-color:var(--green);
+  color:var(--green);
+  background:rgba(74,222,128,0.1);
+}
+
+/* ─── TOON BLOCK SVG TOWERS ─── */
+/* Pure CSS isometric toon blocks used as decoration */
+
+/* ─── HERO ─── */
+.hero{
+  position:relative;
+  min-height:100vh;
+  display:flex;align-items:center;justify-content:center;
+  padding:6rem 2rem 3rem;
+  overflow:hidden;
+}
+
+/* Grass ground */
+.hero::after{
+  content:'';
+  position:absolute;bottom:0;left:0;right:0;height:120px;
+  background:linear-gradient(to bottom, #166534, #15803d);
+  border-top:4px solid #000;
+  clip-path:ellipse(60% 100% at 50% 100%);
+  z-index:0;
+}
+
+.hero-content{
+  position:relative;z-index:2;
+  text-align:center;
+  max-width:700px;
+}
+.hero-badge{
+  display:inline-block;
+  background:var(--orange);
+  border:3px solid #000;
+  border-radius:20px;
+  padding:0.3rem 1.2rem;
+  font-family:var(--font-head);
+  font-size:0.95rem;
+  color:#000;
+  margin-bottom:1.2rem;
+  box-shadow:0 4px 0 #92400e;
+  transform:rotate(-1deg);
+}
+.hero h1{
+  font-family:var(--font-head);
+  font-size:clamp(3.5rem,9vw,6rem);
+  line-height:1;
+  letter-spacing:0.02em;
+  color:var(--yellow);
+  -webkit-text-stroke:4px #000;
+  paint-order:stroke fill;
+  text-shadow:0 6px 0 #92400e,0 10px 20px rgba(0,0,0,0.5);
+  margin-bottom:0.4rem;
+}
+.hero h1 span{
+  color:var(--green);
+  -webkit-text-stroke:4px #000;
+  text-shadow:0 6px 0 #15803d,0 10px 20px rgba(0,0,0,0.5);
+}
+.hero-sub{
+  font-size:1.15rem;
+  font-weight:700;
+  color:rgba(240,244,255,0.85);
+  margin:1.2rem auto 2rem;
+  max-width:480px;
+  line-height:1.6;
+  text-shadow:0 1px 4px rgba(0,0,0,0.8);
+}
+.hero-btn{
+  display:inline-flex;align-items:center;gap:10px;
+  background:var(--green2);
+  border:3px solid #000;
+  border-radius:12px;
+  padding:0.9rem 2.2rem;
+  font-family:var(--font-head);
+  font-size:1.25rem;
+  color:#000;
+  text-decoration:none;
+  box-shadow:0 5px 0 #000, 0 5px 0 #14532d;
+  transition:transform 0.1s,box-shadow 0.1s;
+}
+.hero-btn:hover{transform:translateY(2px);box-shadow:0 3px 0 #000}
+.hero-btn:active{transform:translateY(5px);box-shadow:0 0px 0 #000}
+
+/* ─── FLOATING TOON TOWERS (SVG inline) ─── */
+.tower-left,.tower-right{
+  position:absolute;bottom:60px;z-index:1;
+}
+.tower-left{left:5%}
+.tower-right{right:5%}
+
+/* Bounce animation for towers */
+@keyframes bob{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-10px)}
+}
+.tower-left svg{animation:bob 3s ease-in-out infinite}
+.tower-right svg{animation:bob 3s ease-in-out infinite 1.5s}
+
+/* ─── STAT BUBBLES ─── */
+.hero-stats{
+  display:flex;justify-content:center;gap:1.5rem;
+  margin-top:2.5rem;
+  position:relative;z-index:2;
+  flex-wrap:wrap;
+}
+.stat-bubble{
+  background:var(--panel);
+  border:3px solid #000;
+  border-radius:16px;
+  padding:0.8rem 1.5rem;
+  text-align:center;
+  box-shadow:0 5px 0 #000;
+  min-width:120px;
+}
+.stat-num{
+  font-family:var(--font-head);
+  font-size:2rem;
+  color:var(--yellow);
+  -webkit-text-stroke:2px #000;
+  paint-order:stroke fill;
+  display:block;
+  text-shadow:0 3px 0 #92400e;
+}
+.stat-label{
+  font-size:0.75rem;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:0.08em;
+  color:rgba(240,244,255,0.6);
+}
+
+/* ─── SECTION WRAPPER ─── */
+.section-wrap{
+  position:relative;z-index:1;
+  padding:5rem 2rem;
+  max-width:1100px;
+  margin:0 auto;
+}
+.section-title{
+  font-family:var(--font-head);
+  font-size:clamp(2.2rem,5vw,3.5rem);
+  color:var(--white);
+  -webkit-text-stroke:3px #000;
+  paint-order:stroke fill;
+  text-shadow:0 4px 0 #000;
+  text-align:center;
+  margin-bottom:0.5rem;
+}
+.section-title span{color:var(--yellow);text-shadow:0 4px 0 #92400e}
+.section-sub{
+  text-align:center;
+  font-weight:700;
+  color:rgba(240,244,255,0.5);
+  font-size:0.95rem;
+  letter-spacing:0.06em;
+  text-transform:uppercase;
+  margin-bottom:3rem;
+}
+.section-divider{
+  width:60px;height:4px;
+  background:var(--green);
+  border:2px solid #000;
+  border-radius:4px;
+  margin:0.5rem auto 0.75rem;
+}
+
+/* ─── GAMES SECTION ─── */
+#games{
+  background:linear-gradient(to bottom, var(--bg), var(--bg2));
+}
+
+.games-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+  gap:2rem;
+}
+
+.game-card{
+  background:var(--panel);
+  border:4px solid #000;
+  border-radius:20px;
+  overflow:hidden;
+  box-shadow:0 8px 0 #000;
+  text-decoration:none;
+  color:inherit;
+  display:block;
+  transition:transform 0.15s,box-shadow 0.15s;
+  position:relative;
+}
+.game-card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 12px 0 #000;
+}
+.game-card:active{transform:translateY(4px);box-shadow:0 4px 0 #000}
+
+.card-header{
+  padding:1.5rem 1.5rem 0;
+  display:flex;align-items:flex-start;gap:1rem;
+}
+.card-icon{
+  width:80px;height:80px;
+  border:3px solid #000;
+  border-radius:14px;
+  overflow:hidden;
+  flex-shrink:0;
+  box-shadow:0 4px 0 #000;
+}
+.card-icon img{width:100%;height:100%;object-fit:cover}
+.card-meta{flex:1}
+.card-rarity{
+  display:inline-block;
+  font-family:var(--font-head);
+  font-size:0.75rem;
+  padding:2px 10px;
+  border:2px solid #000;
+  border-radius:20px;
+  margin-bottom:0.4rem;
+}
+.rarity-rare{background:#3b82f6;color:#fff}
+.rarity-epic{background:#8b5cf6;color:#fff}
+.card-title{
+  font-family:var(--font-head);
+  font-size:1.7rem;
+  color:var(--yellow);
+  -webkit-text-stroke:2px #000;
+  paint-order:stroke fill;
+  text-shadow:0 3px 0 #92400e;
+  line-height:1;
+  margin-bottom:0.3rem;
+}
+.card-genre{
+  font-size:0.8rem;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:0.08em;
+  color:var(--teal);
+}
+
+.card-body{
+  padding:1.2rem 1.5rem 1.5rem;
+}
+.card-desc{
+  font-size:0.92rem;
+  font-weight:600;
+  color:rgba(240,244,255,0.75);
+  line-height:1.7;
+  margin-bottom:1.2rem;
+}
+
+/* Stat bars like in the game */
+.card-stats{
+  background:rgba(0,0,0,0.35);
+  border:2px solid rgba(255,255,255,0.1);
+  border-radius:10px;
+  padding:0.75rem 1rem;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:0.5rem;
+  margin-bottom:1.2rem;
+}
+.mini-stat{display:flex;align-items:center;gap:6px}
+.mini-stat-icon{
+  width:18px;height:18px;
+  border-radius:4px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:10px;border:1.5px solid #000;
+  flex-shrink:0;
+}
+.mini-stat-label{font-size:0.7rem;font-weight:800;color:rgba(240,244,255,0.5);text-transform:uppercase;letter-spacing:0.05em}
+.mini-stat-val{font-family:var(--font-head);font-size:0.95rem;color:var(--white);margin-left:auto}
+
+.card-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1.2rem}
+.ctag{
+  font-size:0.7rem;font-weight:800;
+  text-transform:uppercase;letter-spacing:0.06em;
+  padding:3px 10px;
+  border:2px solid #000;border-radius:20px;
+  background:var(--panel2);color:rgba(240,244,255,0.6);
+}
+
+.card-play-btn{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  background:var(--green2);
+  border:3px solid #000;
+  border-radius:10px;
+  padding:0.65rem;
+  font-family:var(--font-head);
+  font-size:1rem;
+  color:#000;
+  box-shadow:0 4px 0 #14532d, 0 4px 0 #000;
+  transition:transform 0.1s,box-shadow 0.1s;
+}
+.game-card:hover .card-play-btn{transform:translateY(-1px);box-shadow:0 5px 0 #14532d,0 5px 0 #000}
+
+/* Decorative corner */
+.card-corner{
+  position:absolute;top:0;right:0;
+  width:50px;height:50px;
+  overflow:hidden;
+}
+.card-corner::after{
+  content:'';
+  position:absolute;top:-25px;right:-25px;
+  width:50px;height:50px;
+  background:var(--green);
+  border:2px solid #000;
+  transform:rotate(45deg);
+}
+
+/* ─── SCREENSHOTS STRIP ─── */
+.screenshots{
+  display:flex;gap:0.75rem;
+  overflow-x:auto;
+  padding:0.5rem 0 1rem;
+  scrollbar-width:thin;
+  scrollbar-color:var(--green) transparent;
+}
+.screenshots img{
+  height:180px;width:auto;
+  border:3px solid #000;
+  border-radius:10px;
+  flex-shrink:0;
+  transition:transform 0.15s;
+}
+.screenshots img:hover{transform:scale(1.05)}
+
+/* ─── ABOUT ─── */
+#about{background:var(--bg2)}
+.about-layout{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:3rem;
+  align-items:start;
+}
+.about-panel{
+  background:var(--panel);
+  border:4px solid #000;
+  border-radius:20px;
+  padding:2rem;
+  box-shadow:0 8px 0 #000;
+}
+.about-panel-title{
+  font-family:var(--font-head);
+  font-size:1.4rem;
+  color:var(--teal);
+  -webkit-text-stroke:1.5px #000;
+  paint-order:stroke fill;
+  margin-bottom:1rem;
+  display:flex;align-items:center;gap:8px;
+}
+.about-panel-title::before{
+  content:'';
+  width:8px;height:8px;
+  background:var(--teal);
+  border:2px solid #000;
+  border-radius:2px;
+  display:inline-block;
+}
+.about-text{
+  font-size:0.95rem;
+  font-weight:600;
+  color:rgba(240,244,255,0.75);
+  line-height:1.8;
+}
+.about-text p+p{margin-top:0.9rem}
+.about-hl{color:var(--green);font-weight:800}
+
+/* Skills grid */
+.skills-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;
+}
+.skill-chip{
+  background:var(--panel2);
+  border:2.5px solid #000;
+  border-radius:12px;
+  padding:0.75rem 1rem;
+  box-shadow:0 3px 0 #000;
+  transition:transform 0.1s;
+}
+.skill-chip:hover{transform:translateY(-2px)}
+.skill-chip-name{
+  font-family:var(--font-head);
+  font-size:1rem;
+  color:var(--yellow);
+  margin-bottom:0.15rem;
+}
+.skill-chip-sub{font-size:0.72rem;font-weight:700;color:rgba(240,244,255,0.45);letter-spacing:0.06em;text-transform:uppercase}
+
+/* ─── CONTACT ─── */
+#contact{
+  background:linear-gradient(to bottom, var(--bg2), var(--bg));
+}
+.contact-box{
+  max-width:580px;
+  margin:0 auto;
+  background:var(--panel);
+  border:4px solid var(--yellow);
+  border-radius:24px;
+  padding:3rem 2.5rem;
+  box-shadow:0 8px 0 #000, 0 0 40px rgba(251,191,36,0.15);
+  text-align:center;
+}
+.contact-box p{
+  font-size:1rem;font-weight:600;
+  color:rgba(240,244,255,0.65);
+  margin-bottom:1.5rem;line-height:1.7;
+}
+.email-btn{
+  display:inline-flex;align-items:center;gap:10px;
+  background:var(--yellow);
+  border:3px solid #000;border-radius:12px;
+  padding:0.85rem 2rem;
+  font-family:var(--font-head);font-size:1.2rem;
+  color:#000;text-decoration:none;
+  box-shadow:0 5px 0 #000;
+  transition:transform 0.1s,box-shadow 0.1s;
+  margin-bottom:1.5rem;
+  display:block;
+}
+.email-btn:hover{transform:translateY(-2px)}
+.location-tag{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--panel2);
+  border:2px solid #000;border-radius:20px;
+  padding:0.35rem 1rem;
+  font-size:0.8rem;font-weight:800;
+  color:rgba(240,244,255,0.5);
+  letter-spacing:0.05em;
+}
+
+/* ─── FOOTER ─── */
+footer{
+  background:rgba(0,0,0,0.6);
+  border-top:3px solid #000;
+  padding:1.5rem 2rem;
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:0.8rem;font-weight:700;
+  color:rgba(240,244,255,0.4);
+}
+footer a{color:var(--green);text-decoration:none;}
+
+/* ─── GROUND STRIP BETWEEN SECTIONS ─── */
+.grass-divider{
+  height:24px;
+  background:linear-gradient(to bottom,#166534,#15803d);
+  border-top:3px solid #000;
+  border-bottom:3px solid #000;
+}
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(30px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.hero-content>*{animation:fadeUp 0.5s ease both}
+.hero-content>*:nth-child(1){animation-delay:0.05s}
+.hero-content>*:nth-child(2){animation-delay:0.15s}
+.hero-content>*:nth-child(3){animation-delay:0.25s}
+.hero-content>*:nth-child(4){animation-delay:0.35s}
+
+@keyframes spinStar{
+  from{transform:rotate(0deg)}to{transform:rotate(360deg)}
+}
+.star-spin{display:inline-block;animation:spinStar 4s linear infinite}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:700px){
+  nav{padding:0.7rem 1rem}
+  .nav-links{display:none}
+  .tower-left,.tower-right{display:none}
+  .about-layout{grid-template-columns:1fr}
+  footer{flex-direction:column;gap:0.5rem;text-align:center}
+  .section-wrap{padding:4rem 1.25rem}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">⚔ SOLMA</a>
+  <ul class="nav-links">
+    <li><a href="#games">Games</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- ════ HERO ════ -->
+<header class="hero">
+
+  <!-- Toon Tower LEFT (CSS SVG) -->
+  <div class="tower-left">
+    <svg width="110" height="200" viewBox="0 0 110 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Foundation block -->
+      <rect x="5" y="155" width="100" height="40" rx="4" fill="#92400e" stroke="#000" stroke-width="3"/>
+      <rect x="5" y="148" width="100" height="14" rx="3" fill="#b45309" stroke="#000" stroke-width="3"/>
+      <rect x="15" y="155" width="12" height="33" fill="#78350f" stroke="#000" stroke-width="2"/>
+      <rect x="83" y="155" width="12" height="33" fill="#78350f" stroke="#000" stroke-width="2"/>
+      <!-- Mid block -->
+      <rect x="12" y="105" width="86" height="48" rx="4" fill="#d97706" stroke="#000" stroke-width="3"/>
+      <rect x="20" y="112" width="14" height="34" fill="#b45309" stroke="#000" stroke-width="2"/>
+      <rect x="76" y="112" width="14" height="34" fill="#b45309" stroke="#000" stroke-width="2"/>
+      <!-- Red accent stripe -->
+      <rect x="12" y="120" width="86" height="8" fill="#ef4444" stroke="#000" stroke-width="2"/>
+      <!-- Top block -->
+      <rect x="18" y="60" width="74" height="50" rx="4" fill="#f59e0b" stroke="#000" stroke-width="3"/>
+      <!-- Window -->
+      <rect x="38" y="70" width="34" height="28" rx="3" fill="#1e3a5f" stroke="#000" stroke-width="2.5"/>
+      <line x1="55" y1="70" x2="55" y2="98" stroke="#000" stroke-width="2"/>
+      <line x1="38" y1="84" x2="72" y2="84" stroke="#000" stroke-width="2"/>
+      <!-- Green glow dot on window -->
+      <circle cx="55" cy="84" r="4" fill="#4ade80" stroke="#000" stroke-width="1.5"/>
+      <!-- Turret top -->
+      <rect x="25" y="35" width="60" height="28" rx="4" fill="#fbbf24" stroke="#000" stroke-width="3"/>
+      <!-- Battlements -->
+      <rect x="25" y="20" width="14" height="18" rx="2" fill="#fbbf24" stroke="#000" stroke-width="2.5"/>
+      <rect x="48" y="20" width="14" height="18" rx="2" fill="#fbbf24" stroke="#000" stroke-width="2.5"/>
+      <rect x="71" y="20" width="14" height="18" rx="2" fill="#fbbf24" stroke="#000" stroke-width="2.5"/>
+      <!-- Arrow slit -->
+      <rect x="48" y="39" width="14" height="18" rx="2" fill="#1e3a5f" stroke="#000" stroke-width="2"/>
+      <!-- Flag -->
+      <line x1="55" y1="8" x2="55" y2="22" stroke="#000" stroke-width="3"/>
+      <polygon points="55,8 72,14 55,20" fill="#ef4444" stroke="#000" stroke-width="2"/>
+    </svg>
+  </div>
+
+  <!-- Toon Tower RIGHT -->
+  <div class="tower-right">
+    <svg width="110" height="200" viewBox="0 0 110 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Foundation -->
+      <rect x="5" y="158" width="100" height="37" rx="4" fill="#1e3a5f" stroke="#000" stroke-width="3"/>
+      <rect x="5" y="150" width="100" height="14" rx="3" fill="#1d4ed8" stroke="#000" stroke-width="3"/>
+      <rect x="15" y="158" width="12" height="30" fill="#1e3a5f" stroke="#000" stroke-width="2"/>
+      <rect x="83" y="158" width="12" height="30" fill="#1e3a5f" stroke="#000" stroke-width="2"/>
+      <!-- Mid -->
+      <rect x="12" y="105" width="86" height="50" rx="4" fill="#2563eb" stroke="#000" stroke-width="3"/>
+      <rect x="20" y="113" width="14" height="34" fill="#1d4ed8" stroke="#000" stroke-width="2"/>
+      <rect x="76" y="113" width="14" height="34" fill="#1d4ed8" stroke="#000" stroke-width="2"/>
+      <!-- Purple stripe -->
+      <rect x="12" y="122" width="86" height="8" fill="#a78bfa" stroke="#000" stroke-width="2"/>
+      <!-- Top -->
+      <rect x="18" y="58" width="74" height="52" rx="4" fill="#3b82f6" stroke="#000" stroke-width="3"/>
+      <!-- Window -->
+      <rect x="36" y="68" width="38" height="30" rx="3" fill="#0f172a" stroke="#000" stroke-width="2.5"/>
+      <line x1="55" y1="68" x2="55" y2="98" stroke="#000" stroke-width="2"/>
+      <line x1="36" y1="83" x2="74" y2="83" stroke="#000" stroke-width="2"/>
+      <!-- Teal dot -->
+      <circle cx="55" cy="83" r="5" fill="#22d3ee" stroke="#000" stroke-width="1.5"/>
+      <!-- Turret -->
+      <rect x="22" y="33" width="66" height="28" rx="4" fill="#60a5fa" stroke="#000" stroke-width="3"/>
+      <!-- Battlements -->
+      <rect x="22" y="17" width="15" height="19" rx="2" fill="#60a5fa" stroke="#000" stroke-width="2.5"/>
+      <rect x="47" y="17" width="15" height="19" rx="2" fill="#60a5fa" stroke="#000" stroke-width="2.5"/>
+      <rect x="72" y="17" width="15" height="19" rx="2" fill="#60a5fa" stroke="#000" stroke-width="2.5"/>
+      <!-- Arrow slit -->
+      <rect x="47" y="37" width="15" height="19" rx="2" fill="#0f172a" stroke="#000" stroke-width="2"/>
+      <!-- Flag -->
+      <line x1="55" y1="6" x2="55" y2="19" stroke="#000" stroke-width="3"/>
+      <polygon points="55,6 72,12 55,18" fill="#a78bfa" stroke="#000" stroke-width="2"/>
+    </svg>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-badge">🎮 Independent Mobile Studio</div>
+    <h1>SOLMA<br><span>GAMES</span></h1>
+    <p class="hero-sub">One developer. Zero compromises. Crafting mobile games with tight mechanics and satisfying loops — for Android.</p>
+    <a class="hero-btn" href="https://play.google.com/store/apps/developer?id=Solma" target="_blank" rel="noopener">
+      ▶ Play our games
+    </a>
+    <div class="hero-stats">
+      <div class="stat-bubble">
+        <span class="stat-num">2</span>
+        <span class="stat-label">Games</span>
+      </div>
+      <div class="stat-bubble">
+        <span class="stat-num">60+</span>
+        <span class="stat-label">Players</span>
+      </div>
+      <div class="stat-bubble">
+        <span class="stat-num">★★</span>
+        <span class="stat-label">Genres</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="grass-divider"></div>
+
+<!-- ════ GAMES ════ -->
+<section id="games">
+  <div class="section-wrap">
+    <p class="section-sub">Portfolio</p>
+    <h2 class="section-title">Our <span>Games</span></h2>
+    <div class="section-divider"></div>
+
+    <!-- Screenshots from the game -->
+    <div class="screenshots" style="margin-bottom:2.5rem">
+      <img src="https://play-lh.googleusercontent.com/ZJYlldwM7If1lPx7XsX3lCZ1jEI9CcA1WT5z4qQW3zt-3WhctIi_Ga6EqSpQM99NmMw=w526-h296" alt="Merge Towers screenshot 1">
+      <img src="https://play-lh.googleusercontent.com/mEEZvjgwZkNgb_NG9t1OakPu6v4_yLP8JmlprEisC9c0F4dqAnm5Errm-LuvkoMahobI=w526-h296" alt="Merge Towers screenshot 2">
+      <img src="https://play-lh.googleusercontent.com/Cuqk71Vn4NCr-tSxks5FgjQ_x4yhofLanZCFAW7SuyT7S2vUqwaEu-NXGPwcInUeS8k=w526-h296" alt="Merge Towers screenshot 3">
+      <img src="https://play-lh.googleusercontent.com/QpH5RYcardO1JxVEcARE0Y1wbyvx23ujHimMv9CT2BlNFpqpVXL2OcAEiBw2Uh6vqUgWUL0wKlRtYW2hXy3vfA=w526-h296" alt="Num Fill screenshot 1">
+      <img src="https://play-lh.googleusercontent.com/5fP8SLbXkKoKexOr3CBT40bMD5-9Tsi0Jj0REnoUOpfBA4xCUfgkt0rfmxXzqhzNafaClbtl1C6HFsqMjgxy=w526-h296" alt="Num Fill screenshot 2">
+    </div>
+
+    <div class="games-grid">
+
+      <!-- Merge Towers -->
+      <a class="game-card" href="https://play.google.com/store/apps/details?id=com.Solma.MergeTowers" target="_blank" rel="noopener">
+        <div class="card-corner"></div>
+        <div class="card-header">
+          <div class="card-icon">
+            <img src="https://play-lh.googleusercontent.com/3AKCG3QGq4ko3dcjkGuR6wOnHYfVDwW0KBvTJY74BH7cHY3DS2i8P5TS6kOmqPaKFbxZEtwtURJ3idV4jDEYAA=w240-h480" alt="Merge Towers icon">
+          </div>
+          <div class="card-meta">
+            <div class="card-rarity rarity-epic">⬡ Casual</div>
+            <div class="card-title">Merge Towers</div>
+            <div class="card-genre">🗡 Strategy · Defense</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <p class="card-desc">Merge towers to build your defenses and defeat endless waves of stickman attackers. Combine, upgrade, and hold the line!</p>
+          <div class="card-stats">
+            <div class="mini-stat">
+              <div class="mini-stat-icon" style="background:#3b82f6">🗼</div>
+              <div>
+                <div class="mini-stat-label">Genre</div>
+                <div class="mini-stat-val" style="font-size:0.75rem;color:var(--teal)">Merge / Defense</div>
+              </div>
+            </div>
+            <div class="mini-stat">
+              <div class="mini-stat-icon" style="background:#22c55e">⬇</div>
+              <div>
+                <div class="mini-stat-label">Downloads</div>
+                <div class="mini-stat-val">50+</div>
+              </div>
+            </div>
+            <div class="mini-stat">
+              <div class="mini-stat-icon" style="background:#f59e0b">★</div>
+              <div>
+                <div class="mini-stat-label">Rating</div>
+                <div class="mini-stat-val" style="color:var(--yellow)">12+</div>
+              </div>
+            </div>
+            <div class="mini-stat">
+              <div class="mini-stat-icon" style="background:#a78bfa">🔄</div>
+              <div>
+                <div class="mini-stat-label">Updated</div>
+                <div class="mini-stat-val" style="font-size:0.75rem">May 2026</div>
+              </div>
+            </div>
+          </div>
+          <div class="card-tags">
+            <span class="ctag">Android</span>
+            <span class="ctag">Free</span>
+            <span class="ctag">Merge</span>
+            <span class="ctag">Wave Defense</span>
+          </div>
+          <div class="card-play-btn">▶ Play on Google Play</div>
+        </div>
+      </a>
+
+      <!-- Num Fill -->
+      <a class="game-card" href="https://play.google.com/store/apps/details?id=com.Solma.NumFIll" target="_blank" rel="noopener">
+        <div class="card-corner"></div>
+        <div class="card-header">
+          <div class="card-icon">
+            <img src="https://play-lh.googleusercontent.com/PIiPWEOXFDwP3TwmcWRRGBS1e0HxDutolzbfptPI7orqNb7pFCadH8SJPnVlhIG_UHA=w240-h480" alt="Num Fill icon">
+          </div>
+          <div class="card-meta">
+            <div class="card-rarity rarity-rare">⬡ Puzzle</div>
+            <div class="card-title">Num Fill</div>
+            <div class="card-genre">🧩 Puzzle · Optimisation</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <p class="card-desc">A minimalist cell puzzle where you fill the board with numbered pieces in the most optimised way. Every placement matters.</p>
+          <div class="card-stats">
+            <div class="mini-stat">
+              <div class="mini-stat-icon" style="background:#ec4899">🧩</div>
+              <div>
+                <div class="mini-stat-label">Genre</div>
+                <div class="mini-stat-val" style="font-size:0.75rem;color:var(--pink)">Cell Puzzle</div>
+              </div>
+            </div>
+            <div class="mini-stat">
+              <div class="mini-stat-icon" style="background:#22c55e">⬇</div>
+              <div>
+                <div class="mini-stat-label">Downloads</div>
+                <div class="mini-stat-val">10+</div>
+              </div>
+            </div>
+            <div class="mini-stat">
+              <div class="mini-stat-icon" style="background:#f59e0b">★</div>
+              <div>
+                <div class="mini-stat-label">Rating</div>
+                <div class="mini-stat-val" style="color:var(--green)">3+</div>
+              </div>
+            </div>
+            <div class="mini-stat">
+              <div class="mini-stat-icon" style="background:#a78bfa">🔄</div>
+              <div>
+                <div class="mini-stat-label">Updated</div>
+                <div class="mini-stat-val" style="font-size:0.75rem">Jan 2026</div>
+              </div>
+            </div>
+          </div>
+          <div class="card-tags">
+            <span class="ctag">Android</span>
+            <span class="ctag">Free</span>
+            <span class="ctag">Minimalist</span>
+            <span class="ctag">Strategy</span>
+          </div>
+          <div class="card-play-btn">▶ Play on Google Play</div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<div class="grass-divider"></div>
+
+<!-- ════ ABOUT ════ -->
+<section id="about">
+  <div class="section-wrap">
+    <p class="section-sub">The Dev</p>
+    <h2 class="section-title">About <span>Solma</span></h2>
+    <div class="section-divider"></div>
+
+    <div class="about-layout">
+      <div class="about-panel">
+        <div class="about-panel-title">Studio Bio</div>
+        <div class="about-text">
+          <p>Solma is a <span class="about-hl">solo indie mobile studio</span> focused on building Android games that are lean, fun, and respect your time.</p>
+          <p>Every game starts with a single question: <span class="about-hl">what's the one thing that makes this fun?</span> Everything else gets cut.</p>
+          <p>Currently shipping on <span class="about-hl">Google Play</span>, with more projects in development. Open to feedback, collabs, and new ideas.</p>
+          <p style="margin-top:1rem;font-size:0.82rem;color:rgba(240,244,255,0.4)">📍 Based in Ukraine · Available remote</p>
+        </div>
+      </div>
+
+      <div>
+        <div class="about-panel" style="margin-bottom:1.5rem">
+          <div class="about-panel-title">Tools & Skills</div>
+          <div class="skills-grid">
+            <div class="skill-chip">
+              <div class="skill-chip-name">Unity</div>
+              <div class="skill-chip-sub">Game Engine</div>
+            </div>
+            <div class="skill-chip">
+              <div class="skill-chip-name">Android</div>
+              <div class="skill-chip-sub">Platform</div>
+            </div>
+            <div class="skill-chip">
+              <div class="skill-chip-name">C#</div>
+              <div class="skill-chip-sub">Scripting</div>
+            </div>
+            <div class="skill-chip">
+              <div class="skill-chip-name">Game Design</div>
+              <div class="skill-chip-sub">Core Loops</div>
+            </div>
+            <div class="skill-chip">
+              <div class="skill-chip-name">UI / UX</div>
+              <div class="skill-chip-sub">Mobile-First</div>
+            </div>
+            <div class="skill-chip">
+              <div class="skill-chip-name">Google Play</div>
+              <div class="skill-chip-sub">Published</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Rarity card hint, flavor from the game -->
+        <div style="background:var(--panel);border:3px solid #000;border-radius:16px;padding:1.25rem;box-shadow:0 5px 0 #000;">
+          <div style="font-family:var(--font-head);font-size:0.9rem;color:var(--teal);margin-bottom:0.75rem;-webkit-text-stroke:1px #000;paint-order:stroke fill">🏆 Current Rarity Tier</div>
+          <div style="display:flex;flex-direction:column;gap:5px">
+            <div style="display:flex;justify-content:space-between;font-size:0.78rem;font-weight:700">
+              <span style="color:#9ca3af">Common</span><span style="color:#9ca3af">shipped &amp; live</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:0.78rem;font-weight:700">
+              <span style="color:#22d3ee">Uncommon</span><span style="color:#22d3ee">growing player base</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:0.78rem;font-weight:700">
+              <span style="color:#3b82f6">Rare</span><span style="color:#9ca3af">next target →</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:0.78rem;font-weight:700;opacity:0.4">
+              <span style="color:#8b5cf6">Epic</span><span>—</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:0.78rem;font-weight:700;opacity:0.3">
+              <span style="color:#f59e0b">Legendary</span><span>—</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="grass-divider"></div>
+
+<!-- ════ CONTACT ════ -->
+<section id="contact">
+  <div class="section-wrap">
+    <p class="section-sub">Get In Touch</p>
+    <h2 class="section-title"><span>Contact</span></h2>
+    <div class="section-divider"></div>
+
+    <div class="contact-box">
+      <p>Have a project, want to collaborate, or just want to say hi? Drop a message — I read everything.</p>
+      <a class="email-btn" href="mailto:solmateam12@gmail.com">
+        ✉ solmateam12@gmail.com
+      </a>
+      <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+        <div class="location-tag">📍 Ukraine</div>
+        <div class="location-tag">🌐 Remote-friendly</div>
+        <a href="https://play.google.com/store/apps/developer?id=Solma" target="_blank" rel="noopener" style="text-decoration:none">
+          <div class="location-tag" style="color:var(--green)">▶ Google Play</div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>© 2026 Solma · All rights reserved</span>
+  <a href="https://play.google.com/store/apps/developer?id=Solma" target="_blank" rel="noopener">▶ Google Play ↗</a>
+</footer>
+
+</body>
+</html>
